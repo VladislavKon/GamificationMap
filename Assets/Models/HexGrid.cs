@@ -8,20 +8,20 @@ public class HexGrid : MonoBehaviour
     public int width = 6;
     public int height = 6;
 	/// <summary>
-	/// Цвет по умолчанию
+	/// Р¦РІРµС‚ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 	/// </summary>
 	public Color defaultColor = Color.white;
 	/// <summary>
-	/// Цвет затронутой ячейки
+	/// Р¦РІРµС‚ Р·Р°С‚СЂРѕРЅСѓС‚РѕР№ СЏС‡РµР№РєРё
 	/// </summary>
 	public Color touchedColor = Color.magenta;
 
 	/// <summary>
-	/// Префаб клетки
+	/// РџСЂРµС„Р°Р± РєР»РµС‚РєРё
 	/// </summary>
 	public HexCell cellPrefab;
 	/// <summary>
-	/// Префаб лэйбла ячейки (текст координат)
+	/// РџСЂРµС„Р°Р± Р»СЌР№Р±Р»Р° СЏС‡РµР№РєРё (С‚РµРєСЃС‚ РєРѕРѕСЂРґРёРЅР°С‚)
 	/// </summary>
 	public Text cellLabelPrefab;
 	HexMesh hexMesh;
@@ -36,7 +36,7 @@ public class HexGrid : MonoBehaviour
     }
 
     /// <summary>
-    /// Инициализация сетки
+    /// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃРµС‚РєРё
     /// </summary>
     void Awake()
 	{
@@ -59,7 +59,7 @@ public class HexGrid : MonoBehaviour
 		hexMesh.Triangulate(cells);
 	}
 	/// <summary>
-	/// Создание клетки
+	/// РЎРѕР·РґР°РЅРёРµ РєР»РµС‚РєРё
 	/// </summary>
 	/// <param name="x"></param>
 	/// <param name="z"></param>
@@ -77,7 +77,7 @@ public class HexGrid : MonoBehaviour
 		cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
 		cell.color = defaultColor;		
 
-		//Паттерн присваивания соседей
+		//РџР°С‚С‚РµСЂРЅ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ СЃРѕСЃРµРґРµР№
 		if (x > 0)
 		{
 			cell.SetNeighbor(HexDirection.W, cells[i - 1]);

@@ -15,7 +15,7 @@ public enum HexDirection
 public static class HexDirectionExtensions
 {
 	/// <summary>
-	/// Получить ротивоположное направление
+	/// Получить противоположное направление
 	/// </summary>
 	/// <param name="direction"></param>
 	/// <returns></returns>

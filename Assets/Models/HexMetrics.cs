@@ -1,3 +1,4 @@
+using Assets.Models;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,12 +17,18 @@ public static class HexMetrics
 	/// Область смешивания цветов 75%
 	/// </summary>
 	public const float solidFactor = 0.75f;
-
 	public const float blendFactor = 1f - solidFactor;
 	/// <summary>
 	/// Шаг изменения высоты
 	/// </summary>
-	public const float elevationStep = 1f;
+	public const float elevationStep = 2f;
+	/// <summary>
+	/// Колличество ступеней
+	/// </summary>
+	public const int terracesPerSlope = 2;	
+	public const int terraceSteps = terracesPerSlope * 2 + 1;
+	public const float horizontalTerraceStepSize = 1f / terraceSteps;
+	public const float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);
 
 	/// <summary>
 	/// Векторы гексогона
@@ -64,6 +71,48 @@ public static class HexMetrics
 	{
 		return (corners[(int)direction] + corners[(int)direction + 1]) *
 			blendFactor;
+	}
+
+	/// <summary>
+	/// Интерполяция ступеней
+	/// </summary>
+	/// <param name="a"></param>
+	/// <param name="b"></param>
+	/// <param name="step"></param>
+	/// <returns></returns>
+	public static Vector3 TerraceLerp(Vector3 a, Vector3 b, int step)
+	{
+		float h = step * HexMetrics.horizontalTerraceStepSize;
+		a.x += (b.x - a.x) * h;
+		a.z += (b.z - a.z) * h;
+		float v = ((step + 1) / 2) * HexMetrics.verticalTerraceStepSize;
+		a.y += (b.y - a.y) * v;
+		return a;
+	}
+
+	public static Color TerraceLerp(Color a, Color b, int step)
+	{
+		float h = step * HexMetrics.horizontalTerraceStepSize;
+		return Color.Lerp(a, b, h);
+	}
+	/// <summary>
+	/// Получение типа склона
+	/// </summary>
+	/// <param name="elevation1"></param>
+	/// <param name="elevation2"></param>
+	/// <returns></returns>
+	public static HexEdgeType GetEdgeType(int elevation1, int elevation2)
+	{
+		if (elevation1 == elevation2)
+		{
+			return HexEdgeType.Flat;
+		}
+		int delta = elevation2 - elevation1;
+		if (delta == 1 || delta == -1)
+		{
+			return HexEdgeType.Slope;
+		}
+		return HexEdgeType.Cliff;
 	}
 }
 

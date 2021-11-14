@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{248B85FB-2C76-DC5A-3A02-38A6DCC247BA}</ProjectGuid>
+    <ProjectGuid>{19F440C8-214B-0DAE-244D-2FC4CE756214}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -53,6 +53,7 @@
     <UnityVersion>2020.3.17f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Assets\Models\HexDirection.cs" />
     <Compile Include="Assets\Models\HexMetrics.cs" />
     <Compile Include="Assets\Models\HexCell.cs" />
     <Compile Include="Assets\Models\HexCoordinatesDrawner.cs" />
@@ -60,7 +61,7 @@
     <Compile Include="Assets\Models\HexCoordinates.cs" />
     <Compile Include="Assets\Models\HexMesh.cs" />
     <Compile Include="Assets\Models\HexMapEditor.cs" />
-    <Compile Include="Assets\Models\HexDirection.cs" />
+    <Compile Include="Assets\Models\HexEdgeType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Models\NewSurfaceShader.shader" />

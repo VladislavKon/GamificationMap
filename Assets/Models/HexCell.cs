@@ -1,3 +1,4 @@
+using Assets.Models;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -60,5 +61,27 @@ public class HexCell : MonoBehaviour
     {
         neighbors[(int)direction] = cell;
         cell.neighbors[(int)direction.Opposite()] = this;
+    }
+    /// <summary>
+    /// Получение типа склона по направлению
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <returns></returns>
+    public HexEdgeType GetEdgeType(HexDirection direction)
+    {
+        return HexMetrics.GetEdgeType(
+            elevation, neighbors[(int)direction].elevation
+        );
+    }
+    /// <summary>
+    /// Определение наклона между двумя любымми ячейками
+    /// </summary>
+    /// <param name="otherCell"></param>
+    /// <returns></returns>
+    public HexEdgeType GetEdgeType(HexCell otherCell)
+    {
+        return HexMetrics.GetEdgeType(
+            elevation, otherCell.elevation
+        );
     }
 }
