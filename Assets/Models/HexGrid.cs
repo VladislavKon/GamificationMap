@@ -26,11 +26,22 @@ public class HexGrid : MonoBehaviour
 	public Text cellLabelPrefab;
 	HexMesh hexMesh;
 
+	/// <summary>
+	/// Канвас грида
+	/// </summary>
 	Canvas gridCanvas;
 
+	/// <summary>
+	/// Массив клеток
+	/// </summary>
 	HexCell[] cells;
 
-    private void Start()
+	/// <summary>
+	/// Текстура шума
+	/// </summary>
+	public Texture2D noiseSource;
+
+	private void Start()
     {
 		hexMesh.Triangulate(cells);
     }
@@ -40,7 +51,7 @@ public class HexGrid : MonoBehaviour
     /// </summary>
     void Awake()
 	{
-		
+		HexMetrics.noiseSource = noiseSource;
 		cells = new HexCell[height * width];
 
 		gridCanvas = GetComponentInChildren<Canvas>();
@@ -53,6 +64,11 @@ public class HexGrid : MonoBehaviour
 				CreateCell(x, z, i++);
 			}
 		}
+	}
+
+	void OnEnable()
+	{
+		HexMetrics.noiseSource = noiseSource;
 	}
 	public void Refresh()
 	{
@@ -107,7 +123,9 @@ public class HexGrid : MonoBehaviour
 		label.rectTransform.anchoredPosition =
 			new Vector2(position.x, position.z);
 		label.text = cell.coordinates.ToStringOnSeparateLines();
+
 		cell.uiRect = label.rectTransform;
+		cell.Elevation = 0;
 	}
 
 	public HexCell GetCell(Vector3 position)

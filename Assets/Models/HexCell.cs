@@ -35,14 +35,26 @@ public class HexCell : MonoBehaviour
             elevation = value;
             Vector3 position = transform.localPosition;
             position.y = value * HexMetrics.elevationStep;
+            position.y +=
+                (HexMetrics.SampleNoise(position).y * 2f - 1f) *
+                HexMetrics.elevationPerturbStrength;
             transform.localPosition = position;
 
             Vector3 uiPosition = uiRect.localPosition;
-            uiPosition.z = elevation * -HexMetrics.elevationStep;
+            uiPosition.z = -position.y;
             uiRect.localPosition = uiPosition;
         }
     }
-
+    /// <summary>
+    /// Свойство для получения позиции (убирает разрывы при действии шума)
+    /// </summary>
+    public Vector3 Position
+    {
+        get
+        {
+            return transform.localPosition;
+        }
+    }
     /// <summary>
     /// Получение соседа ячейки в одном направлении
     /// </summary>
@@ -83,5 +95,6 @@ public class HexCell : MonoBehaviour
         return HexMetrics.GetEdgeType(
             elevation, otherCell.elevation
         );
-    }
+    }    
+    
 }

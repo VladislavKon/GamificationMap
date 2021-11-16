@@ -31,6 +31,26 @@ public static class HexMetrics
 	public const float verticalTerraceStepSize = 1f / (terracesPerSlope + 1);
 
 	/// <summary>
+	/// Текстура шума для неровностей
+	/// </summary>
+	public static Texture2D noiseSource;
+
+	/// <summary>
+	/// Сила шума
+	/// </summary>
+	public const float cellPerturbStrength = 5f;
+
+	/// <summary>
+	/// Масштабирование шума (уменьшаем искажения)
+	/// </summary>
+	public const float noiseScale = 0.003f;
+
+	/// <summary>
+	/// Сила шума для одной отдельной ячейки( ячейки будут разной высоты)
+	/// </summary>
+	public const float elevationPerturbStrength = 1.5f;
+
+	/// <summary>
 	/// Векторы гексогона
 	/// </summary>
 	static Vector3[] corners = {
@@ -113,6 +133,18 @@ public static class HexMetrics
 			return HexEdgeType.Slope;
 		}
 		return HexEdgeType.Cliff;
+	}
+
+	/// <summary>
+	/// Метод выборки шума
+	/// </summary>
+	/// <param name="position"></param>
+	/// <returns></returns>
+	public static Vector4 SampleNoise(Vector3 position)
+	{
+		return noiseSource.GetPixelBilinear(
+			position.x * noiseScale,
+			position.z * noiseScale);
 	}
 }
 
