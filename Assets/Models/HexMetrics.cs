@@ -6,9 +6,13 @@ using UnityEngine;
 public static class HexMetrics
 {
 	/// <summary>
+	/// Размер сегмента
+	/// </summary>
+	public const int chunkSizeX = 5, chunkSizeZ = 5;
+	/// <summary>
 	/// Внешний радиус гексогона
 	/// </summary>
-    public const float outerRadius = 10f;
+	public const float outerRadius = 10f;
 	/// <summary>
 	/// Внутренний радиус гексогона
 	/// </summary>
