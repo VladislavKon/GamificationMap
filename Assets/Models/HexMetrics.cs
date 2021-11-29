@@ -18,14 +18,14 @@ public static class HexMetrics
 	/// </summary>
     public const float innerRadius = outerRadius * 0.866025404f;
 	/// <summary>
-	/// Область смешивания цветов 75%
+	/// Размер внутреннего шестиугольника 80%
 	/// </summary>
-	public const float solidFactor = 0.75f;
+	public const float solidFactor = 0.8f;
 	public const float blendFactor = 1f - solidFactor;
 	/// <summary>
 	/// Шаг изменения высоты
 	/// </summary>
-	public const float elevationStep = 2f;
+	public const float elevationStep = 3f;
 	/// <summary>
 	/// Колличество ступеней
 	/// </summary>
@@ -42,7 +42,7 @@ public static class HexMetrics
 	/// <summary>
 	/// Сила шума
 	/// </summary>
-	public const float cellPerturbStrength = 5f;
+	public const float cellPerturbStrength = 4f;
 
 	/// <summary>
 	/// Масштабирование шума (уменьшаем искажения)

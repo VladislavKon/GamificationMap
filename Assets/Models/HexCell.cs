@@ -12,11 +12,33 @@ public class HexCell : MonoBehaviour
     /// <summary>
     /// Цвет ячейки
     /// </summary>
+    public Color Color
+    {
+        get
+        {
+            return color;
+        }
+        set
+        {
+            if (color == value)
+            {
+                return;
+            }
+            color = value;
+            Refresh();
+        }
+    }
+
     public Color color;
+
     /// <summary>
     /// Уровень высоты
     /// </summary>
-    private int elevation;
+    int elevation = int.MinValue;
+    /// <summary>
+    /// Ссылка на сегмент
+    /// </summary>
+    public HexGridChunk chunk;
     /// <summary>
     /// Массив соседей
     /// </summary>
@@ -24,6 +46,13 @@ public class HexCell : MonoBehaviour
     HexCell[] neighbors;
 
     public RectTransform uiRect;
+
+    void Refresh()
+    {
+        if (chunk) {
+			chunk.Refresh();
+		}
+    }
     public int Elevation
     {
         get
@@ -32,6 +61,10 @@ public class HexCell : MonoBehaviour
         }
         set
         {
+            if (elevation == value)
+            {
+                return;
+            }
             elevation = value;
             Vector3 position = transform.localPosition;
             position.y = value * HexMetrics.elevationStep;
@@ -43,6 +76,7 @@ public class HexCell : MonoBehaviour
             Vector3 uiPosition = uiRect.localPosition;
             uiPosition.z = -position.y;
             uiRect.localPosition = uiPosition;
+            Refresh();
         }
     }
     /// <summary>

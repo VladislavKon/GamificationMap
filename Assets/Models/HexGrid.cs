@@ -55,10 +55,10 @@ public class HexGrid : MonoBehaviour
 	/// </summary>
 	HexGridChunk[] chunks;
 
-	private void Start()
-    {
-		// hexMesh.Triangulate(cells);
-    }
+	//private void Start()
+ //   {
+	//    hexMesh.Triangulate(cells);
+ //   }
 
     /// <summary>
     /// Инициализация сетки
@@ -76,7 +76,7 @@ public class HexGrid : MonoBehaviour
 
 		CreateChunks();
 		CreateCells();		
-	}
+	}	
 	void CreateCells()
 	{
 		cells = new HexCell[cellCountZ * cellCountX];
@@ -106,10 +106,10 @@ public class HexGrid : MonoBehaviour
 	{
 		HexMetrics.noiseSource = noiseSource;
 	}
-	public void Refresh()
-	{
-		// hexMesh.Triangulate(cells);
-	}
+	//public void Refresh()
+	//{
+	//	 hexMesh.Triangulate(cells);
+	//}
 	/// <summary>
 	/// Создание клетки
 	/// </summary>
@@ -127,7 +127,7 @@ public class HexGrid : MonoBehaviour
 		// cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
 		cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
-		cell.color = defaultColor;		
+		cell.Color = defaultColor;		
 
 		//Паттерн присваивания соседей
 		if (x > 0)
