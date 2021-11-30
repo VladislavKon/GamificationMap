@@ -15,15 +15,15 @@ public class HexMesh : MonoBehaviour
     /// <summary>
     /// Коллекция векторов
     /// </summary>
-    List<Vector3> vertices;
+    static List<Vector3> vertices = new List<Vector3>();
     /// <summary>
     /// Коллекция треугольников
     /// </summary>
-    List<int> triangles;
+    static List<int> triangles = new List<int>();
     /// <summary>
     /// Коллекция цветов
     /// </summary>
-    List<Color> colors;
+    static List<Color> colors = new List<Color>();
     /// <summary>
     /// Коллайдер для взаимодействия с объектами
     /// </summary>
@@ -37,12 +37,12 @@ public class HexMesh : MonoBehaviour
         GetComponent<MeshFilter>().mesh = hexMesh = new Mesh();
         meshCollider = gameObject.AddComponent<MeshCollider>();
 
-        colors = new List<Color>();
+        //colors = new List<Color>();
 
         hexMesh.name = "Hex Mesh";
 
-        vertices = new List<Vector3>();
-        triangles = new List<int>();
+        //vertices = new List<Vector3>();
+        //triangles = new List<int>();
     }
     /// <summary>
     /// Триангуляция массива ячеек

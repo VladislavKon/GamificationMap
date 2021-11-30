@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{19F440C8-214B-0DAE-244D-2FC4CE756214}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -53,7 +54,9 @@
     <UnityVersion>2020.3.17f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Assets\Models\EdgeVertices.cs" />
     <Compile Include="Assets\Models\HexDirection.cs" />
+    <Compile Include="Assets\Models\HexMapCamera.cs" />
     <Compile Include="Assets\Models\HexMetrics.cs" />
     <Compile Include="Assets\Models\HexCell.cs" />
     <Compile Include="Assets\Models\HexCoordinatesDrawner.cs" />

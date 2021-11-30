@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class HexGrid : MonoBehaviour
 {
-    int cellCountX;
-    int cellCountZ;
+	int cellCountX, cellCountZ;
 	/// <summary>
 	/// Количество сегментов на карте
 	/// </summary>
