@@ -62,19 +62,17 @@ public class HexGrid : MonoBehaviour
     /// <summary>
     /// Инициализация сетки
     /// </summary>
-    void Awake()
+    void Awake () 
 	{
-		HexMetrics.noiseSource = noiseSource;		
-
-		// gridCanvas = GetComponentInChildren<Canvas>();
-		// hexMesh = GetComponentInChildren<HexMesh>();
+		HexMetrics.noiseSource = noiseSource;
 
 		cellCountX = chunkCountX * HexMetrics.chunkSizeX;
 		cellCountZ = chunkCountZ * HexMetrics.chunkSizeZ;
 
 		CreateChunks();
-		CreateCells();		
-	}	
+		CreateCells();
+	}
+
 	void CreateCells()
 	{
 		cells = new HexCell[cellCountZ * cellCountX];
@@ -87,13 +85,13 @@ public class HexGrid : MonoBehaviour
 			}
 		}
 	}
-	void CreateChunks()
+	void CreateChunks () 
 	{
 		chunks = new HexGridChunk[chunkCountX * chunkCountZ];
 
-		for (int z = 0, i = 0; z < chunkCountZ; z++)
+		for (int z = 0, i = 0; z < chunkCountZ; z++) 
 		{
-			for (int x = 0; x < chunkCountX; x++)
+			for (int x = 0; x < chunkCountX; x++) 
 			{
 				HexGridChunk chunk = chunks[i++] = Instantiate(chunkPrefab);
 				chunk.transform.SetParent(transform);
@@ -120,15 +118,13 @@ public class HexGrid : MonoBehaviour
 		Vector3 position;
 		position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
 		position.y = 0f;
-		position.z = z * (HexMetrics.outerRadius * 1.5f);			
+		position.z = z * (HexMetrics.outerRadius * 1.5f);
 
 		HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
-		// cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
 		cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
-		cell.Color = defaultColor;		
+		cell.Color = defaultColor;
 
-		//Паттерн присваивания соседей
 		if (x > 0)
 		{
 			cell.SetNeighbor(HexDirection.W, cells[i - 1]);
@@ -154,12 +150,11 @@ public class HexGrid : MonoBehaviour
 		}
 
 		Text label = Instantiate<Text>(cellLabelPrefab);
-		// label.rectTransform.SetParent(gridCanvas.transform, false);
 		label.rectTransform.anchoredPosition =
 			new Vector2(position.x, position.z);
 		label.text = cell.coordinates.ToStringOnSeparateLines();
-
 		cell.uiRect = label.rectTransform;
+
 		cell.Elevation = 0;
 
 		AddCellToChunk(x, z, cell);
@@ -186,10 +181,10 @@ public class HexGrid : MonoBehaviour
 	{
 		position = transform.InverseTransformPoint(position);
 		HexCoordinates coordinates = HexCoordinates.FromPosition(position);
-		int index = coordinates.X + coordinates.Z * chunkCountX + coordinates.Z / 2;
-		return cells[index];		
+		int index = coordinates.X + coordinates.Z * cellCountX + coordinates.Z / 2;
+		return cells[index];
 	}
-	
+
 	/// <summary>
 	/// Получение ячейки по координатам (для кисти)
 	/// </summary>
