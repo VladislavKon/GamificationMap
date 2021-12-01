@@ -64,8 +64,7 @@ public class HexGrid : MonoBehaviour
     /// </summary>
     void Awake()
 	{
-		HexMetrics.noiseSource = noiseSource;
-		cells = new HexCell[cellCountZ * chunkCountX];
+		HexMetrics.noiseSource = noiseSource;		
 
 		// gridCanvas = GetComponentInChildren<Canvas>();
 		// hexMesh = GetComponentInChildren<HexMesh>();
@@ -119,7 +118,7 @@ public class HexGrid : MonoBehaviour
 	void CreateCell(int x, int z, int i)
 	{
 		Vector3 position;
-		position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f); ;
+		position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
 		position.y = 0f;
 		position.z = z * (HexMetrics.outerRadius * 1.5f);			
 
@@ -138,18 +137,18 @@ public class HexGrid : MonoBehaviour
 		{
 			if ((z & 1) == 0)
 			{
-				cell.SetNeighbor(HexDirection.SE, cells[i - chunkCountX]);
+				cell.SetNeighbor(HexDirection.SE, cells[i - cellCountX]);
 				if (x > 0)
 				{
-					cell.SetNeighbor(HexDirection.SW, cells[i - chunkCountX - 1]);
+					cell.SetNeighbor(HexDirection.SW, cells[i - cellCountX - 1]);
 				}
 			}
 			else
 			{
-				cell.SetNeighbor(HexDirection.SW, cells[i - chunkCountX]);
-				if (x < chunkCountX - 1)
+				cell.SetNeighbor(HexDirection.SW, cells[i - cellCountX]);
+				if (x < cellCountX - 1)
 				{
-					cell.SetNeighbor(HexDirection.SE, cells[i - chunkCountX + 1]);
+					cell.SetNeighbor(HexDirection.SE, cells[i - cellCountX + 1]);
 				}
 			}
 		}
