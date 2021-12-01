@@ -191,6 +191,7 @@ public class HexMesh : MonoBehaviour
 
             TriangulateEdgeStrip(e2, c2, end, endCell.Color);
         }
+
         /// <summary>
         /// Триангуляция площадки (треугольника), связывающей 3 ячейки
         /// </summary>
@@ -264,9 +265,7 @@ public class HexMesh : MonoBehaviour
         {
             AddTriangle(bottom, left, right);
             AddTriangleColor(bottomCell.Color, leftCell.Color, rightCell.Color);
-        }
-        AddTriangle(bottom, left, right);
-        AddTriangleColor(bottomCell.Color, leftCell.Color, rightCell.Color);
+        }        
     }    
     /// <summary>
     /// Триангуляция углов террас
@@ -377,8 +376,7 @@ public class HexMesh : MonoBehaviour
         Vector3 v2 = Perturb(HexMetrics.TerraceLerp(begin, left, 1));
         Color c2 = HexMetrics.TerraceLerp(beginCell.Color, leftCell.Color, 1);
 
-        AddTriangleUnperturbed(Perturb(begin), v2, boundary);
-        AddTriangle(begin, v2, boundary);
+        AddTriangleUnperturbed(Perturb(begin), v2, boundary);        
         AddTriangleColor(beginCell.Color, c2, boundaryColor);
 
         for (int i = 2; i < HexMetrics.terraceSteps; i++)

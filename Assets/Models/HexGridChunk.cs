@@ -26,6 +26,7 @@ public class HexGridChunk : MonoBehaviour
 	{
 		enabled = true;
 	}
+	
 	void LateUpdate()
 	{
 		hexMesh.Triangulate(cells);
