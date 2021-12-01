@@ -33,7 +33,7 @@ public class HexGridChunk : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Добавление ячеек в массив
+	/// Р”РѕР±Р°РІР»РµРЅРёРµ СЏС‡РµРµРє РІ РјР°СЃСЃРёРІ
 	/// </summary>
 	/// <param name="index"></param>
 	/// <param name="cell"></param>
@@ -46,7 +46,7 @@ public class HexGridChunk : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Метод показа координат(меток) ячеек
+	/// РњРµС‚РѕРґ РїРѕРєР°Р·Р° РєРѕРѕСЂРґРёРЅР°С‚(РјРµС‚РѕРє) СЏС‡РµРµРє
 	/// </summary>
 	/// <param name="visible"></param>
 	public void ShowUI(bool visible)
