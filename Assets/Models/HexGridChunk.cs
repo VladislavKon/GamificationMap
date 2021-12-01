@@ -14,6 +14,7 @@ public class HexGridChunk : MonoBehaviour
 		hexMesh = GetComponentInChildren<HexMesh>();
 
 		cells = new HexCell[HexMetrics.chunkSizeX * HexMetrics.chunkSizeZ];
+		ShowUI(false);
 	}
 
 	//void Start()
@@ -42,5 +43,14 @@ public class HexGridChunk : MonoBehaviour
 		cell.chunk = this;
 		cell.transform.SetParent(transform, false);
 		cell.uiRect.SetParent(gridCanvas.transform, false);
+	}
+
+	/// <summary>
+	/// ћетод показа координат(меток) €чеек
+	/// </summary>
+	/// <param name="visible"></param>
+	public void ShowUI(bool visible)
+	{
+		gridCanvas.gameObject.SetActive(visible);
 	}
 }
