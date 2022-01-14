@@ -28,8 +28,9 @@ public class HexCell : MonoBehaviour
             Refresh();
         }
     }
-
+    // Для сохранения(сохраняем не цвет, а его индекс)
     public Color color;
+    int colorIndex;
 
     /// <summary>
     /// Уровень высоты

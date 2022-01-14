@@ -55,6 +55,11 @@ public static class HexMetrics
 	public const float elevationPerturbStrength = 1.5f;
 
 	/// <summary>
+	/// Цвета для сохранения карты
+	/// </summary>
+	public static Color[] colors;
+
+	/// <summary>
 	/// Векторы гексогона
 	/// </summary>
 	static Vector3[] corners = {

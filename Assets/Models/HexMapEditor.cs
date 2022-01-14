@@ -127,4 +127,13 @@ public class HexMapEditor : MonoBehaviour
 	{
 		hexGrid.ShowUI(visible);
 	}
+
+	public void Save()
+	{
+		Debug.Log(Application.persistentDataPath);
+	}
+
+	public void Load()
+	{
+	}
 }
