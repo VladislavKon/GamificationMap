@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,9 +12,9 @@ public class HexGrid : MonoBehaviour
 	/// </summary>
 	public int chunkCountX = 4, chunkCountZ = 3;
 	/// <summary>
-	/// Цвет по умолчанию
+	/// Цвет по умолчани(убрано для сохранения карты)
 	/// </summary>
-	public Color defaultColor = Color.white;
+	//public Color defaultColor = Color.white;
 	/// <summary>
 	/// Цвет затронутой ячейки
 	/// </summary>
@@ -130,7 +131,7 @@ public class HexGrid : MonoBehaviour
 		HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
 		cell.transform.localPosition = position;
 		cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
-		cell.Color = defaultColor;
+		//cell.Color = defaultColor;
 
 		if (x > 0)
 		{
@@ -221,6 +222,29 @@ public class HexGrid : MonoBehaviour
 		for (int i = 0; i < chunks.Length; i++)
 		{
 			chunks[i].ShowUI(visible);
+		}
+	}
+	/// <summary>
+	/// Сохранение грида
+	/// </summary>
+	/// <param name="writer"></param>
+	public void Save(BinaryWriter writer)
+	{
+		for (int i = 0; i < cells.Length; i++)
+		{
+			cells[i].Save(writer);
+		}
+	}
+
+	public void Load(BinaryReader reader)
+	{
+		for (int i = 0; i < cells.Length; i++)
+		{
+			cells[i].Load(reader);
+		}
+		for (int i = 0; i < chunks.Length; i++)
+		{
+			chunks[i].Refresh();
 		}
 	}
 

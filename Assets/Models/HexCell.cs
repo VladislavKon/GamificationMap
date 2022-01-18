@@ -2,6 +2,7 @@ using Assets.Models;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class HexCell : MonoBehaviour
 {
@@ -16,21 +17,37 @@ public class HexCell : MonoBehaviour
     {
         get
         {
-            return color;
+            return HexMetrics.colors[terrainTypeIndex];
+        }
+        //set
+        //{
+        //    if (color == value)
+        //    {
+        //        return;
+        //    }
+        //    color = value;
+        //    Refresh();
+        //}
+    }
+    // Тип местности для сохранения
+    public int TerrainTypeIndex
+    {
+        get
+        {
+            return terrainTypeIndex;
         }
         set
         {
-            if (color == value)
+            if (terrainTypeIndex != value)
             {
-                return;
+                terrainTypeIndex = value;
+                Refresh();
             }
-            color = value;
-            Refresh();
         }
     }
     // Для сохранения(сохраняем не цвет, а его индекс)
-    public Color color;
-    int colorIndex;
+    // public Color color;
+    int terrainTypeIndex;
 
     /// <summary>
     /// Уровень высоты
@@ -75,6 +92,7 @@ public class HexCell : MonoBehaviour
                 return;
             }
             elevation = value;
+            RefreshPosition();
             Vector3 position = transform.localPosition;
             position.y = value * HexMetrics.elevationStep;
             position.y +=
@@ -138,6 +156,33 @@ public class HexCell : MonoBehaviour
         return HexMetrics.GetEdgeType(
             elevation, otherCell.elevation
         );
-    }    
-    
+    }
+    public void Save(BinaryWriter writer)
+    {
+        writer.Write(terrainTypeIndex);
+        writer.Write(elevation);        
+    }
+
+    public void Load(BinaryReader reader)
+    {
+        terrainTypeIndex = reader.ReadInt32();
+        elevation = reader.ReadInt32();
+        RefreshPosition();
+    }
+    /// <summary>
+    /// Обновление высоты после загрузыки
+    /// </summary>
+    void RefreshPosition()
+    {
+        Vector3 position = transform.localPosition;
+        position.y = elevation * HexMetrics.elevationStep;
+        position.y +=
+            (HexMetrics.SampleNoise(position).y * 2f - 1f) *
+            HexMetrics.elevationPerturbStrength;
+        transform.localPosition = position;
+
+        Vector3 uiPosition = uiRect.localPosition;
+        uiPosition.z = -position.y;
+        uiRect.localPosition = uiPosition;
+    }
 }

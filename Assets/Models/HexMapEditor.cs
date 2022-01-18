@@ -2,20 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.IO;
 
 public class HexMapEditor : MonoBehaviour
 {
-	public Color[] colors;
+	// public Color[] colors;
 
 	// включен ли цветовой редактор
-	bool applyColor;
+	// bool applyColor;
 
 	public HexGrid hexGrid;
 
 	/// <summary>
 	/// Активный цвет (выбранный на интерфейсе)
 	/// </summary>
-	private Color activeColor;
+	//private Color activeColor;
+
+	/// <summary>
+	/// Активный тип местности (для сохранения)
+	/// </summary>
+	int activeTerrainTypeIndex;
 
 	int activeElevation;
 
@@ -24,10 +30,10 @@ public class HexMapEditor : MonoBehaviour
 	// Размер кисти
 	int brushSize;
 
-	void Awake()
-	{
-		SelectColor(-1);
-	}
+	//void Awake()
+	//{
+	//	SelectColor(-1);
+	//}
 	void Update()
 	{
 		if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
@@ -76,9 +82,13 @@ public class HexMapEditor : MonoBehaviour
 	{
 		if (cell)
 		{
-			if (applyColor)
+			//if (applyColor)
+			//{
+			//	cell.Color = activeColor;
+			//}
+			if (activeTerrainTypeIndex >= 0)
 			{
-				cell.Color = activeColor;
+				cell.TerrainTypeIndex = activeTerrainTypeIndex;
 			}
 			if (applyElevation)
 			{
@@ -87,14 +97,14 @@ public class HexMapEditor : MonoBehaviour
 		}
 	}
 
-	public void SelectColor(int index)
-	{
-		applyColor = index >= 0;
-		if (applyColor)
-		{
-			activeColor = colors[index];
-		}
-	}
+	//public void SelectColor(int index)
+	//{
+	//	applyColor = index >= 0;
+	//	if (applyColor)
+	//	{
+	//		activeColor = colors[index];
+	//	}
+	//}
 
 	public void SetElevation(float elevation)
 	{
@@ -120,6 +130,15 @@ public class HexMapEditor : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Метод управления индексом активного типа местности
+	/// </summary>
+	/// <param name="index"></param>
+	public void SetTerrainTypeIndex(int index)
+	{
+		activeTerrainTypeIndex = index;
+	}
+
+	/// <summary>
 	/// Метод показа координат(меток) ячеек
 	/// </summary>
 	/// <param name="visible"></param>
@@ -131,9 +150,31 @@ public class HexMapEditor : MonoBehaviour
 	public void Save()
 	{
 		Debug.Log(Application.persistentDataPath);
+		string path = Path.Combine(Application.persistentDataPath, "test.map");
+		using (
+			BinaryWriter writer =
+				new BinaryWriter(File.Open(path, FileMode.Create))
+		)
+		{
+			writer.Write(0);
+			hexGrid.Save(writer);
+		}
 	}
 
 	public void Load()
 	{
+		string path = Path.Combine(Application.persistentDataPath, "test.map");
+		using (BinaryReader reader = new BinaryReader(File.OpenRead(path)))
+		{
+			int header = reader.ReadInt32();
+			if (header == 0)
+			{
+				hexGrid.Load(reader);
+			}
+			else
+			{
+				Debug.LogWarning("Unknown map format " + header);
+			}
+		}
 	}
 }
