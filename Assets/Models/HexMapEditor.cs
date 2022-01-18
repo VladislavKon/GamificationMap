@@ -3,25 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.IO;
+using System;
 
 public class HexMapEditor : MonoBehaviour
 {
-	// public Color[] colors;
+	public Color[] colors;
+	public static int colorIndex;
 
-	// включен ли цветовой редактор
-	// bool applyColor;
+    // включен ли цветовой редактор
+    bool applyColor;
 
-	public HexGrid hexGrid;
+    public HexGrid hexGrid;
 
-	/// <summary>
-	/// Активный цвет (выбранный на интерфейсе)
-	/// </summary>
-	//private Color activeColor;
+    /// <summary>
+    /// Активный цвет (выбранный на интерфейсе)
+    /// </summary>
+    private Color activeColor;
 
-	/// <summary>
-	/// Активный тип местности (для сохранения)
-	/// </summary>
-	int activeTerrainTypeIndex;
+    /// <summary>
+    /// Активный тип местности (для сохранения)
+    /// </summary>
+    //int activeTerrainTypeIndex;
 
 	int activeElevation;
 
@@ -82,14 +84,15 @@ public class HexMapEditor : MonoBehaviour
 	{
 		if (cell)
 		{
-			//if (applyColor)
+            if (applyColor)
+            {
+				cell.ColorIndex = Array.IndexOf(hexGrid.colors, activeColor);
+				cell.Color = activeColor;				 
+            }
+   //         if (activeTerrainTypeIndex >= 0)
 			//{
-			//	cell.Color = activeColor;
+			//	cell.ColorIndex = activeTerrainTypeIndex;
 			//}
-			if (activeTerrainTypeIndex >= 0)
-			{
-				cell.TerrainTypeIndex = activeTerrainTypeIndex;
-			}
 			if (applyElevation)
 			{
 				cell.Elevation = activeElevation;
@@ -97,16 +100,16 @@ public class HexMapEditor : MonoBehaviour
 		}
 	}
 
-	//public void SelectColor(int index)
-	//{
-	//	applyColor = index >= 0;
-	//	if (applyColor)
-	//	{
-	//		activeColor = colors[index];
-	//	}
-	//}
+    public void SelectColor(int index)
+    {		
+        applyColor = index >= 0;
+        if (applyColor)
+        {			
+			activeColor = hexGrid.colors[index];
+        }
+    }
 
-	public void SetElevation(float elevation)
+    public void SetElevation(float elevation)
 	{
 		activeElevation = (int)elevation;
 	}
@@ -133,10 +136,10 @@ public class HexMapEditor : MonoBehaviour
 	/// Метод управления индексом активного типа местности
 	/// </summary>
 	/// <param name="index"></param>
-	public void SetTerrainTypeIndex(int index)
-	{
-		activeTerrainTypeIndex = index;
-	}
+	//public void SetTerrainTypeIndex(int index)
+	//{
+	//	activeTerrainTypeIndex = index;
+	//}
 
 	/// <summary>
 	/// Метод показа координат(меток) ячеек

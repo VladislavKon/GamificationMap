@@ -17,37 +17,38 @@ public class HexCell : MonoBehaviour
     {
         get
         {
-            return HexMetrics.colors[terrainTypeIndex];
-        }
-        //set
-        //{
-        //    if (color == value)
-        //    {
-        //        return;
-        //    }
-        //    color = value;
-        //    Refresh();
-        //}
-    }
-    // Тип местности для сохранения
-    public int TerrainTypeIndex
-    {
-        get
-        {
-            return terrainTypeIndex;
+            return HexMetrics.colors[ColorIndex];
         }
         set
         {
-            if (terrainTypeIndex != value)
+            if (color == value)
             {
-                terrainTypeIndex = value;
+                return;
+            }
+            color = value;
+            Refresh();
+        }
+    }
+    public Color color;
+    
+    // Индекс цвета для сохраенения для сохранения
+    public int ColorIndex
+    {
+        get
+        {
+            return colorIndex;
+        }
+        set
+        {
+            if (colorIndex != value)
+            {
+                colorIndex = value;
                 Refresh();
             }
         }
     }
-    // Для сохранения(сохраняем не цвет, а его индекс)
-    // public Color color;
-    int terrainTypeIndex;
+    // Для сохранения(сохраняем не цвет, а его индекс)    
+    int colorIndex;
 
     /// <summary>
     /// Уровень высоты
@@ -159,13 +160,13 @@ public class HexCell : MonoBehaviour
     }
     public void Save(BinaryWriter writer)
     {
-        writer.Write(terrainTypeIndex);
+        writer.Write(colorIndex);
         writer.Write(elevation);        
     }
 
     public void Load(BinaryReader reader)
     {
-        terrainTypeIndex = reader.ReadInt32();
+        colorIndex = reader.ReadInt32();
         elevation = reader.ReadInt32();
         RefreshPosition();
     }
