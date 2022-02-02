@@ -67,6 +67,8 @@
     <Compile Include="Assets\Interfaces\ILoad.cs" />
     <Compile Include="Assets\Models\HexMapEditor.cs" />
     <Compile Include="Assets\Models\GameController.cs" />
+    <Compile Include="Assets\Models\SaveMapModel.cs" />
+    <Compile Include="Assets\Models\SaveMapData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Models\NewSurfaceShader.shader" />

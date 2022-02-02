@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.IO;
 using System;
+using System.Runtime.InteropServices;
 
 public class HexMapEditor : MonoBehaviour
 {
@@ -150,34 +151,34 @@ public class HexMapEditor : MonoBehaviour
 		hexGrid.ShowUI(visible);
 	}
 
-	public void Save()
-	{
-		Debug.Log(Application.persistentDataPath);
-		string path = Path.Combine(Application.persistentDataPath, "test.map");
-		using (
-			BinaryWriter writer =
-				new BinaryWriter(File.Open(path, FileMode.Create))
-		)
-		{
-			writer.Write(0);
-			hexGrid.Save(writer);
-		}
-	}
+	[DllImport("__Internal")]
+	private static extern void SaveGame(string mapData);
 
+	public void Save()
+	{		
+		Debug.Log(Application.persistentDataPath);		
+		var mapData = new SaveMapData(new List<SaveMapModel>());		
+		hexGrid.Save(mapData);
+		string jsonMap = JsonUtility.ToJson(mapData);
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+				SaveGame (jsonMap);
+#endif
+	}
 	public void Load()
 	{
-		string path = Path.Combine(Application.persistentDataPath, "test.map");
-		using (BinaryReader reader = new BinaryReader(File.OpenRead(path)))
-		{
-			int header = reader.ReadInt32();
-			if (header == 0)
-			{
-				hexGrid.Load(reader);
-			}
-			else
-			{
-				Debug.LogWarning("Unknown map format " + header);
-			}
-		}
+		//string path = Path.Combine(Application.persistentDataPath, "test.map");
+		//SaveMapData data = JsonUtility.FromJson<SaveMapData>(savestring);
+		//using (BinaryReader reader = new BinaryReader(File.OpenRead(path)))
+		//{
+		//	int header = reader.ReadInt32();
+		//	if (header == 0)
+		//	{
+		//		hexGrid.Load(reader);
+		//	}
+		//	else
+		//	{
+		//		Debug.LogWarning("Unknown map format " + header);
+		//	}
+		//}
 	}
 }

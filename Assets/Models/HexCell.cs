@@ -158,16 +158,15 @@ public class HexCell : MonoBehaviour
             elevation, otherCell.elevation
         );
     }
-    public void Save(BinaryWriter writer)
+    public void Save(SaveMapData map)
     {
-        writer.Write(colorIndex);
-        writer.Write(elevation);        
+        map.saveMapModels.Add(new SaveMapModel(colorIndex, elevation));
     }
 
-    public void Load(BinaryReader reader)
+    public void Load(List<SaveMapModel> map)
     {
-        colorIndex = reader.ReadInt32();
-        elevation = reader.ReadInt32();
+        //colorIndex = reader.ReadInt32();
+        //elevation = reader.ReadInt32();
         RefreshPosition();
     }
     /// <summary>

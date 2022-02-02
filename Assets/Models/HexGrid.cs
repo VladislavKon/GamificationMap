@@ -1,3 +1,4 @@
+using Assets.Models;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -228,19 +229,19 @@ public class HexGrid : MonoBehaviour
 	/// Сохранение грида
 	/// </summary>
 	/// <param name="writer"></param>
-	public void Save(BinaryWriter writer)
+	public void Save(SaveMapData map)
 	{
 		for (int i = 0; i < cells.Length; i++)
 		{
-			cells[i].Save(writer);
+			cells[i].Save(map);
 		}
 	}
 
-	public void Load(BinaryReader reader)
+	public void Load(List<SaveMapModel> map)
 	{
 		for (int i = 0; i < cells.Length; i++)
 		{
-			cells[i].Load(reader);
+			cells[i].Load(map);
 		}
 		for (int i = 0; i < chunks.Length; i++)
 		{
