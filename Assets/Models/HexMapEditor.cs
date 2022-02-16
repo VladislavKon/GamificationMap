@@ -157,7 +157,7 @@ public class HexMapEditor : MonoBehaviour
 	public void Save()
 	{		
 		Debug.Log(Application.persistentDataPath);		
-		var mapData = new SaveMapData(new List<SaveMapModel>());		
+		var mapData = new SaveMapData(new List<Cell>());		
 		hexGrid.Save(mapData);
 		string jsonMap = JsonUtility.ToJson(mapData);
 #if UNITY_WEBGL == true && UNITY_EDITOR == false

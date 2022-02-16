@@ -4,9 +4,9 @@ using System.Collections.Generic;
 [Serializable]
 public class SaveMapData
 {
-    public SaveMapData(List<SaveMapModel> saveMapModels)
+    public SaveMapData(List<Cell> cells)
     {
-        this.saveMapModels = saveMapModels;
+        this.Cells = cells;
     }
-    public List<SaveMapModel> saveMapModels;
+    public List<Cell> Cells;
 }

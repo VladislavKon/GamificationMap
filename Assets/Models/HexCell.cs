@@ -160,10 +160,10 @@ public class HexCell : MonoBehaviour
     }
     public void Save(SaveMapData map)
     {
-        map.saveMapModels.Add(new SaveMapModel(colorIndex, elevation, coordinates));
+        map.Cells.Add(new Cell(colorIndex, elevation, coordinates.X, coordinates.Y, coordinates.Z));
     }
 
-    public void Load(List<SaveMapModel> map)
+    public void Load(List<Cell> map)
     {
         //colorIndex = reader.ReadInt32();
         //elevation = reader.ReadInt32();

@@ -237,7 +237,7 @@ public class HexGrid : MonoBehaviour
 		}
 	}
 
-	public void Load(List<SaveMapModel> map)
+	public void Load(List<Cell> map)
 	{
 		for (int i = 0; i < cells.Length; i++)
 		{
