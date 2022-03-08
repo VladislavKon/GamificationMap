@@ -163,10 +163,10 @@ public class HexCell : MonoBehaviour
         map.Cells.Add(new Cell(colorIndex, elevation, coordinates.X, coordinates.Y, coordinates.Z));
     }
 
-    public void Load(List<Cell> map)
+    public void Load(Cell cell)
     {
-        //colorIndex = reader.ReadInt32();
-        //elevation = reader.ReadInt32();
+        colorIndex = cell.Color;
+        elevation = cell.Elevation;
         RefreshPosition();
     }
     /// <summary>

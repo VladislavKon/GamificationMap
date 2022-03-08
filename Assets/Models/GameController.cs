@@ -14,5 +14,5 @@ public class GameController : MonoBehaviour
     public void SpawnEnemies(int amount)
     {
         Debug.Log($"Spawning {amount} enemies!");
-    }
+    }    
 }

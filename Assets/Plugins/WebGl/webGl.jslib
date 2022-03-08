@@ -6,10 +6,15 @@ mergeInto(LibraryManager.library, {
       score
     );
   },
-  SaveGame: function (map) {
+  SaveMap: function (map) {
     window.dispatchReactUnityEvent(
-      "SaveGame",
+      "SaveMap",
       Pointer_stringify(map)
+    );
+  },
+  LoadMap: function (map) {
+    window.dispatchReactUnityEvent(
+      "LoadMap"
     );
   }
 });

@@ -32,12 +32,17 @@ public class HexMapEditor : MonoBehaviour
 
 	// Размер кисти
 	int brushSize;
+	ILogger logger;
+    public HexMapEditor(ILogger logger)
+    {
+		this.logger = logger;		
+    }
 
-	//void Awake()
-	//{
-	//	SelectColor(-1);
-	//}
-	void Update()
+    //void Awake()
+    //{
+    //	SelectColor(-1);
+    //}
+    void Update()
 	{
 		if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
 		{
@@ -152,7 +157,9 @@ public class HexMapEditor : MonoBehaviour
 	}
 
 	[DllImport("__Internal")]
-	private static extern void SaveGame(string mapData);
+	private static extern void SaveMap(string mapData);
+	[DllImport("__Internal")]
+	private static extern string LoadMap();
 
 	public void Save()
 	{		
@@ -161,24 +168,37 @@ public class HexMapEditor : MonoBehaviour
 		hexGrid.Save(mapData);
 		string jsonMap = JsonUtility.ToJson(mapData);
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
-				SaveGame (jsonMap);
+				SaveMap (jsonMap);
 #endif
-	}
+	}	
 	public void Load()
 	{
+		string jsonMap = string.Empty;
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+				jsonMap = LoadMap();
+#endif
 		//string path = Path.Combine(Application.persistentDataPath, "test.map");
 		//SaveMapData data = JsonUtility.FromJson<SaveMapData>(savestring);
 		//using (BinaryReader reader = new BinaryReader(File.OpenRead(path)))
 		//{
-		//	int header = reader.ReadInt32();
-		//	if (header == 0)
-		//	{
-		//		hexGrid.Load(reader);
-		//	}
-		//	else
-		//	{
-		//		Debug.LogWarning("Unknown map format " + header);
-		//	}
+		//    int header = reader.ReadInt32();
+		//    if (header == 0)
+		//    {
+		//        hexGrid.Load(reader);
+		//    }
+		//    else
+		//    {
+		//        Debug.LogWarning("Unknown map format " + header);
+		//    }
 		//}
+	}
+	public void SetMapData(string jsonMap)
+    {
+		SaveMapData map = JsonUtility.FromJson<SaveMapData>(jsonMap);
+        foreach (var item in map.Cells)
+        {
+			logger.Log($"x:{item.X} y:{item.Y} z:{item.Z}");
+        }
+		hexGrid.Load(map);
 	}
 }
