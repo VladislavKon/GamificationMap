@@ -103,6 +103,8 @@ public class HexMapEditor : MonoBehaviour
 			{
 				cell.Elevation = activeElevation;
 			}
+			Cell updatedCell = new Cell(cell.ColorIndex, cell.Elevation, cell.coordinates.X, cell.coordinates.Y, cell.coordinates.Z); 
+			UpdateTargetCell(updatedCell);
 		}
 	}
 
@@ -159,39 +161,41 @@ public class HexMapEditor : MonoBehaviour
 	[DllImport("__Internal")]
 	private static extern void SaveMap(string mapData);
 	[DllImport("__Internal")]
-	private static extern string LoadMap();
+	private static extern void LoadMap();
+	[DllImport("__Internal")]
+	private static extern void UpdateCell(string cell);
 
 	public void Save()
 	{		
-		Debug.Log(Application.persistentDataPath);		
-		var mapData = new SaveMapData(new List<Cell>());		
+		var mapData = new SaveMapData(new List<Cell>());
 		hexGrid.Save(mapData);
 		string jsonMap = JsonUtility.ToJson(mapData);
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
-				SaveMap (jsonMap);
+				SaveMap(jsonMap);
 #endif
-	}	
+	}
+
+	public void UpdateTargetCell(Cell cell)
+    {
+		string jsonCell = JsonUtility.ToJson(cell);
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+				UpdateCell(jsonCell);
+#endif
+	}
+	/// <summary>
+	/// Метод загрузки карты (Unity->React)
+	/// </summary>
 	public void Load()
 	{
 		string jsonMap = string.Empty;
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
 		LoadMap();
-#endif
-		//string path = Path.Combine(Application.persistentDataPath, "test.map");
-		//SaveMapData data = JsonUtility.FromJson<SaveMapData>(savestring);
-		//using (BinaryReader reader = new BinaryReader(File.OpenRead(path)))
-		//{
-		//    int header = reader.ReadInt32();
-		//    if (header == 0)
-		//    {
-		//        hexGrid.Load(reader);
-		//    }
-		//    else
-		//    {
-		//        Debug.LogWarning("Unknown map format " + header);
-		//    }
-		//}
+#endif		
 	}
+	/// <summary>
+	/// Метод загрузки карты (React->Unity)
+	/// </summary>
+	/// <param name="mapJson"></param>
 	public void SetMapData(string mapJson)
 	{
 		SaveMapData map = JsonUtility.FromJson<SaveMapData>(mapJson);
