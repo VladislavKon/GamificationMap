@@ -6,7 +6,7 @@ public class SaveMapData
 {
     public SaveMapData(List<Cell> cells)
     {
-        this.Cells = cells;
+        this.cells = cells;
     }
-    public List<Cell> Cells;
+    public List<Cell> cells;
 }

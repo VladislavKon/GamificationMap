@@ -160,13 +160,13 @@ public class HexCell : MonoBehaviour
     }
     public void Save(SaveMapData map)
     {
-        map.Cells.Add(new Cell(colorIndex, elevation, coordinates.X, coordinates.Y, coordinates.Z));
+        map.cells.Add(new Cell(colorIndex, elevation, coordinates.X, coordinates.Y, coordinates.Z));
     }
 
     public void Load(Cell cell)
     {
-        colorIndex = cell.Color;
-        elevation = cell.Elevation;
+        colorIndex = cell.color;
+        elevation = cell.elevation;
         RefreshPosition();
     }
     /// <summary>

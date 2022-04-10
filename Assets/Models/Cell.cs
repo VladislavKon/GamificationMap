@@ -5,16 +5,16 @@ public class Cell
 {
     public Cell(int color, int elevation, int x, int y, int z)
     {
-        Color = color;
-        Elevation = elevation;
-        X = x;
-        Y = y;
-        Z = z;
+        this.color = color;
+        this.elevation = elevation;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
-    public int Color;
-    public int Elevation;
-    public int X;
-    public int Y;
-    public int Z;
+    public int color;
+    public int elevation;
+    public int x;
+    public int y;
+    public int z;
 }
 

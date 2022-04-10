@@ -28,7 +28,7 @@ public class HexMapEditor : MonoBehaviour
 
 	int activeElevation;
 
-	bool applyElevation = true;
+	public bool applyElevation;
 
 	// Размер кисти
 	int brushSize;
@@ -175,7 +175,7 @@ public class HexMapEditor : MonoBehaviour
 	{
 		string jsonMap = string.Empty;
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
-				jsonMap = LoadMap();
+		LoadMap();
 #endif
 		//string path = Path.Combine(Application.persistentDataPath, "test.map");
 		//SaveMapData data = JsonUtility.FromJson<SaveMapData>(savestring);
@@ -192,13 +192,9 @@ public class HexMapEditor : MonoBehaviour
 		//    }
 		//}
 	}
-	public void SetMapData(string jsonMap)
-    {
-		SaveMapData map = JsonUtility.FromJson<SaveMapData>(jsonMap);
-        foreach (var item in map.Cells)
-        {
-			logger.Log($"x:{item.X} y:{item.Y} z:{item.Z}");
-        }
+	public void SetMapData(string mapJson)
+	{
+		SaveMapData map = JsonUtility.FromJson<SaveMapData>(mapJson);
 		hexGrid.Load(map);
 	}
 }

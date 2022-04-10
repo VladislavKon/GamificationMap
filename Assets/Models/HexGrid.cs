@@ -2,6 +2,7 @@ using Assets.Models;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -239,10 +240,16 @@ public class HexGrid : MonoBehaviour
 
 	public void Load(SaveMapData map)
 	{
-		for (int i = 0; i < cells.Length; i++)
-		{
-			cells[i].Load(map.Cells[i]);
-		}
+        foreach (var cell in map.cells)
+        {
+			var targetCell = cells.SingleOrDefault(c => c.coordinates.X == cell.x && c.coordinates.Y == cell.y && c.coordinates.Z == cell.z);
+			targetCell.ColorIndex = cell.color;
+			targetCell.Elevation = cell.elevation;
+        }
+		//for (int i = 0; i < cells.Length; i++)
+		//{            
+		//	cells[i].Load(map.cells[i]);
+		//}
 		for (int i = 0; i < chunks.Length; i++)
 		{
 			chunks[i].Refresh();
