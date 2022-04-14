@@ -11,20 +11,20 @@ public class HexMapEditor : MonoBehaviour
 	public Color[] colors;
 	public static int colorIndex;
 
-    // включен ли цветовой редактор
-    bool applyColor;
+	// включен ли цветовой редактор
+	bool applyColor;
 
-    public HexGrid hexGrid;
+	public HexGrid hexGrid;
 
-    /// <summary>
-    /// Активный цвет (выбранный на интерфейсе)
-    /// </summary>
-    private Color activeColor;
+	/// <summary>
+	/// Активный цвет (выбранный на интерфейсе)
+	/// </summary>
+	private Color activeColor;
 
-    /// <summary>
-    /// Активный тип местности (для сохранения)
-    /// </summary>
-    //int activeTerrainTypeIndex;
+	/// <summary>
+	/// Активный тип местности (для сохранения)
+	/// </summary>
+	//int activeTerrainTypeIndex;
 
 	int activeElevation;
 
@@ -33,16 +33,16 @@ public class HexMapEditor : MonoBehaviour
 	// Размер кисти
 	int brushSize;
 	ILogger logger;
-    public HexMapEditor(ILogger logger)
-    {
-		this.logger = logger;		
-    }
+	public HexMapEditor(ILogger logger)
+	{
+		this.logger = logger;
+	}
 
-    //void Awake()
-    //{
-    //	SelectColor(-1);
-    //}
-    void Update()
+	//void Awake()
+	//{
+	//	SelectColor(-1);
+	//}
+	void Update()
 	{
 		if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
 		{
@@ -90,12 +90,12 @@ public class HexMapEditor : MonoBehaviour
 	{
 		if (cell)
 		{
-            if (applyColor)
-            {
+			if (applyColor)
+			{
 				cell.ColorIndex = Array.IndexOf(hexGrid.colors, activeColor);
-				cell.Color = activeColor;				 
-            }
-   //         if (activeTerrainTypeIndex >= 0)
+				cell.Color = activeColor;
+			}
+			//         if (activeTerrainTypeIndex >= 0)
 			//{
 			//	cell.ColorIndex = activeTerrainTypeIndex;
 			//}
@@ -103,21 +103,31 @@ public class HexMapEditor : MonoBehaviour
 			{
 				cell.Elevation = activeElevation;
 			}
-			Cell updatedCell = new Cell(cell.ColorIndex, cell.Elevation, cell.coordinates.X, cell.coordinates.Y, cell.coordinates.Z); 
+			Cell updatedCell = new Cell(cell.ColorIndex, cell.Elevation, cell.coordinates.X, cell.coordinates.Y, cell.coordinates.Z);
 			UpdateTargetCell(updatedCell);
 		}
 	}
-
-    public void SelectColor(int index)
-    {		
-        applyColor = index >= 0;
-        if (applyColor)
-        {			
-			activeColor = hexGrid.colors[index];
-        }
+	/// <summary>
+	/// Метод для захвата ячейки
+	/// </summary>
+	/// <param name="cell"></param>
+	public void CaptureCell(Cell cell)
+    {
+		var cellCoordinates = new HexCoordinates(cell.x, cell.z);
+		var updatedCell = hexGrid.GetCell(cellCoordinates);
+		updatedCell.ColorIndex = cell.color;
     }
 
-    public void SetElevation(float elevation)
+	public void SelectColor(int index)
+	{
+		applyColor = index >= 0;
+		if (applyColor)
+		{
+			activeColor = hexGrid.colors[index];
+		}
+	}
+
+	public void SetElevation(float elevation)
 	{
 		activeElevation = (int)elevation;
 	}
@@ -126,7 +136,7 @@ public class HexMapEditor : MonoBehaviour
 	/// Метод отключения/включения ползунка высоты
 	/// </summary>
 	/// <param name="toggle"></param>
-	public void SetApplyElevation (bool toggle)
+	public void SetApplyElevation(bool toggle)
 	{
 		applyElevation = toggle;
 	}
@@ -166,7 +176,7 @@ public class HexMapEditor : MonoBehaviour
 	private static extern void UpdateCell(string cell);
 
 	public void Save()
-	{		
+	{
 		var mapData = new SaveMapData(new List<Cell>());
 		hexGrid.Save(mapData);
 		string jsonMap = JsonUtility.ToJson(mapData);
@@ -176,7 +186,7 @@ public class HexMapEditor : MonoBehaviour
 	}
 
 	public void UpdateTargetCell(Cell cell)
-    {
+	{
 		string jsonCell = JsonUtility.ToJson(cell);
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
 				UpdateCell(jsonCell);
@@ -187,10 +197,9 @@ public class HexMapEditor : MonoBehaviour
 	/// </summary>
 	public void Load()
 	{
-		string jsonMap = string.Empty;
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
 		LoadMap();
-#endif		
+#endif
 	}
 	/// <summary>
 	/// Метод загрузки карты (React->Unity)
@@ -200,5 +209,15 @@ public class HexMapEditor : MonoBehaviour
 	{
 		SaveMapData map = JsonUtility.FromJson<SaveMapData>(mapJson);
 		hexGrid.Load(map);
+	}
+	/// <summary>
+	/// Метод захвата ячейки (React(SignalR) -> Unity)
+	/// </summary>
+	/// <param name="cellJson"></param>
+	public void GrabCell(string cellJson)
+    {
+		Cell cell = JsonUtility.FromJson<Cell>(cellJson);
+		CaptureCell(cell);
+
 	}
 }
