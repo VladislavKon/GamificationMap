@@ -1,15 +1,15 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using System.IO;
-using System;
-using System.Runtime.InteropServices;
 
-public class HexMapEditor : MonoBehaviour
+public class HexMapEditor : MonoBehaviour, IPointerClickHandler
 {
 	public Color[] colors;
 	public static int colorIndex;
+
+	private static HexCell SelectedCell;
 
 	// включен ли цветовой редактор
 	bool applyColor;
@@ -43,12 +43,24 @@ public class HexMapEditor : MonoBehaviour
 	//	SelectColor(-1);
 	//}
 	void Update()
+	{		
+		HandleInput();
+	}
+
+	public void OnPointerClick(PointerEventData eventData)
 	{
-		if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+		if (eventData.button == PointerEventData.InputButton.Left)
 		{
-			HandleInput();
+			Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+			RaycastHit hit;
+			if (Physics.Raycast(inputRay, out hit))
+			{
+				var cell = hexGrid.GetCell(hit.point);
+				EditCells(cell);
+			}
 		}
 	}
+	
 	/// <summary>
 	/// Обработчик клика мыши по гриду
 	/// </summary>
@@ -58,7 +70,17 @@ public class HexMapEditor : MonoBehaviour
 		RaycastHit hit;
 		if (Physics.Raycast(inputRay, out hit))
 		{
-			EditCells(hexGrid.GetCell(hit.point));
+			var cell = hexGrid.GetCell(hit.point);
+            if (SelectedCell != cell)
+            {
+				SelectedCell?.DisableHighlight();
+				SelectedCell = cell;
+			}
+			cell.EnableHighlight(Color.green);
+			if (Input.GetMouseButtonDown((int)PointerEventData.InputButton.Left) && !EventSystem.current.IsPointerOverGameObject())
+			{
+				EditCells(cell);
+			}
 		}
 	}
 	/// <summary>
@@ -86,7 +108,7 @@ public class HexMapEditor : MonoBehaviour
 		}
 	}
 
-	void EditCell(HexCell cell)
+	public void EditCell(HexCell cell)
 	{
 		if (cell)
 		{
@@ -219,5 +241,5 @@ public class HexMapEditor : MonoBehaviour
 		Cell cell = JsonUtility.FromJson<Cell>(cellJson);
 		CaptureCell(cell);
 
-	}
+	}    
 }

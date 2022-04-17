@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class HexCell : MonoBehaviour
 {
@@ -65,6 +67,7 @@ public class HexCell : MonoBehaviour
     HexCell[] neighbors;
 
     public RectTransform uiRect;
+
 
     void Refresh()
     {
@@ -184,5 +187,24 @@ public class HexCell : MonoBehaviour
         Vector3 uiPosition = uiRect.localPosition;
         uiPosition.z = -position.y;
         uiRect.localPosition = uiPosition;
+    }
+
+    /// <summary>
+    /// Метод отключения выделения ячейки
+    /// </summary>
+    public void DisableHighlight()
+    {
+        Image highlight = uiRect.GetChild(0).GetComponent<Image>();
+        highlight.enabled = false;
+    }
+    /// <summary>
+    /// Метод включения выделения ячейки
+    /// </summary>
+    /// <param name="color"></param>
+    public void EnableHighlight(Color color)
+    {
+        Image highlight = uiRect.GetChild(0).GetComponent<Image>();
+        highlight.color = color;
+        highlight.enabled = true;
     }
 }
