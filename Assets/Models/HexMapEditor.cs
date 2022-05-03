@@ -1,10 +1,11 @@
+using Assets.Models;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class HexMapEditor : MonoBehaviour, IPointerClickHandler
+public class HexMapEditor : MonoBehaviour
 {
 	public Color[] colors;
 	public static int colorIndex;
@@ -15,6 +16,8 @@ public class HexMapEditor : MonoBehaviour, IPointerClickHandler
 	bool applyColor;
 
 	public HexGrid hexGrid;
+
+	public PopupCapture popupCapture;
 
 	/// <summary>
 	/// Активный цвет (выбранный на интерфейсе)
@@ -30,6 +33,7 @@ public class HexMapEditor : MonoBehaviour, IPointerClickHandler
 
 	public bool applyElevation;
 
+	delegate void EditCellFunc(HexCell cell);
 	// Размер кисти
 	int brushSize;
 	ILogger logger;
@@ -45,44 +49,39 @@ public class HexMapEditor : MonoBehaviour, IPointerClickHandler
 	void Update()
 	{		
 		HandleInput();
-	}
-
-	public void OnPointerClick(PointerEventData eventData)
-	{
-		if (eventData.button == PointerEventData.InputButton.Left)
-		{
-			Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
-			if (Physics.Raycast(inputRay, out hit))
-			{
-				var cell = hexGrid.GetCell(hit.point);
-				EditCells(cell);
-			}
-		}
-	}
+	}	
 	
 	/// <summary>
-	/// Обработчик клика мыши по гриду
+	/// Обработчик клика мыши по гриду(каждый апдейт кадра)
 	/// </summary>
 	void HandleInput()
 	{
 		Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
-		if (Physics.Raycast(inputRay, out hit))
+		if (!Physics.Raycast(inputRay, out hit))
 		{
-			var cell = hexGrid.GetCell(hit.point);
-            if (SelectedCell != cell)
-            {
-				SelectedCell?.DisableHighlight();
-				SelectedCell = cell;
-			}
-			cell.EnableHighlight(Color.green);
-			if (Input.GetMouseButtonDown((int)PointerEventData.InputButton.Left) && !EventSystem.current.IsPointerOverGameObject())
-			{
-				EditCells(cell);
-			}
+			return;
 		}
+		var cell = hexGrid.GetCell(hit.point);
+		if (SelectedCell != cell)
+		{
+			SelectedCell?.DisableHighlight();
+			SelectedCell = cell;
+		}
+		cell.EnableHighlight(Color.green);
+		if (Input.GetMouseButtonDown((int)PointerEventData.InputButton.Left) && !EventSystem.current.IsPointerOverGameObject())
+		{
+			ConfirmCapture(cell);
+		}
+
 	}
+
+	void ConfirmCapture(HexCell cell)
+    {
+		EditCellFunc editCellFunc = (hexCell) => EditCell(hexCell);
+		popupCapture.ShowPopup(editCellFunc, cell);
+		//EditCell(cell);
+    }
 	/// <summary>
 	///  Метод редактирования нескольких ячеек (для размера кисти кисти)
 	/// </summary>
