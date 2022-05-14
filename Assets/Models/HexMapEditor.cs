@@ -42,11 +42,12 @@ public class HexMapEditor : MonoBehaviour
 		this.logger = logger;
 	}
 
-	//void Awake()
-	//{
-	//	SelectColor(-1);
-	//}
-	void Update()
+    void Awake()
+    {
+		//SelectColor(-1);
+		Load();
+    }
+    void Update()
 	{		
 		HandleInput();
 	}	

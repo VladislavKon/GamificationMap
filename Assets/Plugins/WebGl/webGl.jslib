@@ -18,9 +18,25 @@ mergeInto(LibraryManager.library, {
       Pointer_stringify(cell)
     );
   },
-  LoadMap: function (map) {
+  LoadMap: function () {
     window.dispatchReactUnityEvent(
       "LoadMap"
+    );
+  },
+  GetCurrentUser: function () {
+    window.dispatchReactUnityEvent(
+      "GetCurrentUser"
+    );
+  },
+  GetAllTeams: function () {
+    window.dispatchReactUnityEvent(
+      "GetAllTeams"
+    );
+  },
+  SubtractPoints: function (player) {
+    window.dispatchReactUnityEvent(
+      "SubtractPoints",
+      Pointer_stringify(player)
     );
   }
 });
