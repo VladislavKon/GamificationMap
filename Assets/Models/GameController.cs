@@ -7,6 +7,12 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+    public Canvas editUI;
+    /// <summary>
+    /// Ограничение кадров
+    /// </summary>
+    public int targetFrameRate = 30;
+
     /// <summary>
     /// Имя текущего игрока
     /// </summary>
@@ -23,6 +29,22 @@ public class GameController : MonoBehaviour
         }
     }
 
+    User CurrentPlayer
+    {
+        get 
+        { 
+            return CurrentPlayer; 
+        } 
+        set 
+        {
+            if (value.role == "Admin")
+            {
+                editUI.gameObject.SetActive(true);
+            }            
+            CurrentPlayer = value; 
+        } 
+    }
+
     /// <summary>
     /// Участвующие в игре команды
     /// </summary>
@@ -34,16 +56,20 @@ public class GameController : MonoBehaviour
         }
         set
         {
+            CurrentPlayer = value.Where(t => t.Users.Any(u => u.userName == CurrentPlayerName))
+                .SingleOrDefault()
+                .Users
+                .Where(u => u.userName == CurrentPlayerName)
+                .SingleOrDefault();
             Teams = value;
-            if (CurrentPlayerName != null) 
-            {
-                GameObject.Find("Points").GetComponent<Text>().text = GetPlayerInfo().Points.ToString();
-            }
         }
     }
 
     public void Start()
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = targetFrameRate;
+
         GetCurrentPlayerName();
         GetCurrentTeams();        
     }
@@ -88,26 +114,32 @@ public class GameController : MonoBehaviour
     public void SetPlayer(string UserName)
     {
         CurrentPlayerName = UserName;
+        GetPlayerTeam().Users.Where(u => u.userName == UserName).SingleOrDefault();
     }
 
     public Team GetPlayerTeam()
     {
-        return Teams.Where(t => t.Users.Any(u => u.UserName == CurrentPlayerName)).SingleOrDefault();
+        return Teams.Where(t => t.Users.Any(u => u.userName == CurrentPlayerName)).SingleOrDefault();
     }
 
     public User GetPlayerInfo()
     {
-        return GetPlayerTeam().Users.Where(u => u.UserName == CurrentPlayerName).SingleOrDefault();
+        return CurrentPlayer;
     }
 
     [DllImport("__Internal")]
-    private static extern void SubtractPoints(User player);
+    private static extern void SubtractPoints(User currentPlayerState, User newPlayerState);
     public void SubtractPoints(int points)
     {
-        var player = GetPlayerInfo();
-        player.Points =- points;
+        User newPlayerState = (User)CurrentPlayer.Clone();
+        newPlayerState.points =- points;
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
-				SubtractPoints(player);
+				SubtractPoints(CurrentPlayer, newPlayerState);
 #endif
+    }    
+    public void UpdatePlayerState(User newPlayerState)
+    {
+        CurrentPlayer = newPlayerState;
     }
+
 }

@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 
 public class HexMapEditor : MonoBehaviour
 {
+	public GameController gameController;
 	public Color[] colors;
 	public static int colorIndex;
 
@@ -42,11 +43,11 @@ public class HexMapEditor : MonoBehaviour
 		this.logger = logger;
 	}
 
-    void Awake()
+    void Start()
     {
 		//SelectColor(-1);
 		Load();
-    }
+	}
     void Update()
 	{		
 		HandleInput();
@@ -129,15 +130,23 @@ public class HexMapEditor : MonoBehaviour
 			UpdateTargetCell(updatedCell);
 		}
 	}
+
+	public void CaptureCell(HexCell cell)
+	{
+		if (cell && gameController.GetPlayerInfo() != null)
+		{
+			cell.Owner = gameController.GetPlayerInfo().id;
+		}
+	}
 	/// <summary>
 	/// Метод для захвата ячейки
 	/// </summary>
 	/// <param name="cell"></param>
-	public void CaptureCell(Cell cell)
+	public void OnCaptureCell(Cell cell)
     {
 		var cellCoordinates = new HexCoordinates(cell.x, cell.z);
-		var updatedCell = hexGrid.GetCell(cellCoordinates);
-		updatedCell.ColorIndex = cell.color;
+		var selectedCell = hexGrid.GetCell(cellCoordinates);
+		selectedCell.Owner = Guid.Empty;
     }
 
 	public void SelectColor(int index)
@@ -239,7 +248,6 @@ public class HexMapEditor : MonoBehaviour
 	public void GrabCell(string cellJson)
     {
 		Cell cell = JsonUtility.FromJson<Cell>(cellJson);
-		CaptureCell(cell);
-
+		OnCaptureCell(cell);
 	}    
 }

@@ -8,8 +8,14 @@ namespace Assets.Models
 {
     public class User
     {
-        public string UserName;
-        public Guid Id;
-        public int Points;
+        public string userName;
+        public Guid id;
+        public int points;
+        public string role;
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

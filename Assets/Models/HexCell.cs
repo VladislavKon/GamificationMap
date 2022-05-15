@@ -5,6 +5,7 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 public class HexCell : MonoBehaviour
 {
@@ -49,6 +50,19 @@ public class HexCell : MonoBehaviour
             }
         }
     }
+
+    public Guid? Owner { 
+        get
+        {
+            return Owner;
+        } 
+        set
+        {
+            Owner = value;
+            EnableOwnerHighlight(Color.red);
+        }
+    }
+
     // Для сохранения(сохраняем не цвет, а его индекс)    
     int colorIndex;
 
@@ -204,6 +218,13 @@ public class HexCell : MonoBehaviour
     public void EnableHighlight(Color color)
     {
         Image highlight = uiRect.GetChild(0).GetComponent<Image>();
+        highlight.color = color;
+        highlight.enabled = true;
+    }
+
+    public void EnableOwnerHighlight(Color color)
+    {
+        Image highlight = uiRect.GetChild(1).GetComponent<Image>();
         highlight.color = color;
         highlight.enabled = true;
     }

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -53,23 +53,29 @@
     <UnityVersion>2020.3.17f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Assets\Models\HexMapCamera.cs" />
     <Compile Include="Assets\Interfaces\ISave.cs" />
     <Compile Include="Assets\Models\EdgeVertices.cs" />
     <Compile Include="Assets\Models\SaveMapData.cs" />
     <Compile Include="Assets\Models\HexGridChunk.cs" />
+    <Compile Include="Assets\Models\PopupCapture.cs" />
     <Compile Include="Assets\Models\HexDirection.cs" />
     <Compile Include="Assets\Models\HexMetrics.cs" />
     <Compile Include="Assets\Models\HexCell.cs" />
+    <Compile Include="Assets\Models\PlayerUiController.cs" />
     <Compile Include="Assets\Models\HexGrid.cs" />
     <Compile Include="Assets\Models\HexEdgeType.cs" />
+    <Compile Include="Assets\Models\User.cs" />
+    <Compile Include="Assets\Models\Team.cs" />
     <Compile Include="Assets\Models\Cell.cs" />
     <Compile Include="Assets\Models\HexCoordinates.cs" />
     <Compile Include="Assets\Models\HexMesh.cs" />
     <Compile Include="Assets\Interfaces\ILoad.cs" />
     <Compile Include="Assets\Models\HexMapEditor.cs" />
     <Compile Include="Assets\Models\GameController.cs" />
-    <Compile Include="Assets\Models\PopupCapture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\HighlightShader.shader" />

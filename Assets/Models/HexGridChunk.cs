@@ -14,7 +14,7 @@ public class HexGridChunk : MonoBehaviour
 		hexMesh = GetComponentInChildren<HexMesh>();
 
 		cells = new HexCell[HexMetrics.chunkSizeX * HexMetrics.chunkSizeZ];
-		ShowUI(false);
+		ShowUI(true);
 	}
 
 	//void Start()
