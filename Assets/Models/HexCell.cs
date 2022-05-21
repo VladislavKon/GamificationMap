@@ -50,16 +50,17 @@ public class HexCell : MonoBehaviour
             }
         }
     }
-
-    public Guid? Owner { 
+    Guid? ownerId;
+    public Color ownerColorHighligh;
+    public Guid? OwnerId { 
         get
         {
-            return Owner;
+            return ownerId;
         } 
         set
         {
-            Owner = value;
-            EnableOwnerHighlight(Color.red);
+            ownerId = value;
+            EnableOwnerHighlight(ownerColorHighligh);
         }
     }
 

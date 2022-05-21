@@ -4,77 +4,100 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Models;
 using UnityEngine.UI;
+using System;
 
 public class GameController : MonoBehaviour
 {
+    public static readonly Color[] TeamsColors =
+    {
+        Color.green,
+        Color.red,
+        Color.blue,
+        Color.gray,
+        Color.yellow
+    };
     public Canvas editUI;
     /// <summary>
     /// Ограничение кадров
     /// </summary>
     public int targetFrameRate = 30;
 
+    string userName;
     /// <summary>
     /// Имя текущего игрока
     /// </summary>
-    string CurrentPlayerName
+    string UserName
     {
         get
         {
-            return CurrentPlayerName;
+            return userName;
         }
         set
         {
-            CurrentPlayerName = value;
-            GameObject.Find("PlayerName").GetComponent<Text>().text = CurrentPlayerName;
+            userName = value;
+            if (Teams != null)
+            {
+                CurrentPlayer = GetCurrentPlayer();
+            }
         }
     }
-
+    User currentPlayer;
     User CurrentPlayer
     {
         get 
         { 
-            return CurrentPlayer; 
+            return currentPlayer; 
         } 
         set 
         {
-            if (value.role == "Admin")
-            {
-                editUI.gameObject.SetActive(true);
-            }            
-            CurrentPlayer = value; 
+            //if (value.role == "Admin")
+            //{
+            //editUI.gameObject.SetActive(true);
+            //}            
+            currentPlayer = value;
+            GameObject.Find("PlayerName").GetComponent<Text>().text = CurrentPlayer.userName;
+            GameObject.Find("Points").GetComponent<Text>().text = CurrentPlayer.points.ToString();
         } 
     }
-
+    
+    static List<Team> teams;
     /// <summary>
     /// Участвующие в игре команды
     /// </summary>
-    List<Team> Teams
+    public List<Team> Teams
     { 
         get 
         { 
-            return Teams; 
+            return teams; 
         }
         set
-        {
-            CurrentPlayer = value.Where(t => t.Users.Any(u => u.userName == CurrentPlayerName))
-                .SingleOrDefault()
-                .Users
-                .Where(u => u.userName == CurrentPlayerName)
-                .SingleOrDefault();
-            Teams = value;
+        {            
+            teams = value;
+            if (UserName != null)
+            {
+                CurrentPlayer = GetCurrentPlayer();
+            }
+            SetTeamsColors();
         }
+    }
+
+    private void SetTeamsColors()
+    {
+        int counter = 0;
+        Teams.ForEach(t => t.colorIndex = TeamsColors[counter++]);
     }
 
     public void Start()
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = targetFrameRate;
-
-        GetCurrentPlayerName();
-        GetCurrentTeams();        
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+		GetCurrentUser();
+        GetAllTeams();
+#endif
     }
 
-    [DllImport("__Internal")]
+        [DllImport("__Internal")]
     private static extern void GameOver(string userName, int score);
     public void SomeMethod()
     {
@@ -93,53 +116,50 @@ public class GameController : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void GetCurrentUser();
 
-    public void GetCurrentPlayerName()
+    public void SetTeams(string allTeams)
     {
-#if UNITY_WEBGL == true && UNITY_EDITOR == false
-				GetCurrentUser();
-#endif
-    }
-
-    public void GetCurrentTeams()
-    {
-#if UNITY_WEBGL == true && UNITY_EDITOR == false
-				GetAllTeams();
-#endif
-    }
-
-    public void SetTeams(List<Team> teams)
-    {
-        Teams = teams;
+        Teams teams = JsonUtility.FromJson<Teams>("{\"teams\" :" + allTeams + "}");
+        Teams = teams.teams;
+        Debug.Log(JsonUtility.ToJson(teams));
     }
     public void SetPlayer(string UserName)
     {
-        CurrentPlayerName = UserName;
-        GetPlayerTeam().Users.Where(u => u.userName == UserName).SingleOrDefault();
+        this.UserName = UserName; 
     }
 
     public Team GetPlayerTeam()
     {
-        return Teams.Where(t => t.Users.Any(u => u.userName == CurrentPlayerName)).SingleOrDefault();
+        var playerTeam = Teams.Where(t => t.users.Any(u => u.userName == UserName)).SingleOrDefault();
+        Debug.Log($"GetPlayerTeam | {playerTeam.id}");
+        return playerTeam;
     }
 
-    public User GetPlayerInfo()
+    public static List<Team> GetCurrentTeams()
     {
-        return CurrentPlayer;
+        return teams;
     }
 
     [DllImport("__Internal")]
-    private static extern void SubtractPoints(User currentPlayerState, User newPlayerState);
+    private static extern void SubtractPoints(User currentPlayer, int points);
     public void SubtractPoints(int points)
     {
-        User newPlayerState = (User)CurrentPlayer.Clone();
-        newPlayerState.points =- points;
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
-				SubtractPoints(CurrentPlayer, newPlayerState);
+				SubtractPoints(CurrentPlayer, points);
 #endif
-    }    
+    }
     public void UpdatePlayerState(User newPlayerState)
     {
         CurrentPlayer = newPlayerState;
     }
-
+    public User GetCurrentPlayer()
+    {
+        return GetPlayerTeam()
+            .users
+            .Where(u => u.userName == UserName)
+            .SingleOrDefault();
+    }
+    public static Color GetTeamColor(string ownerId)
+    {
+        return teams.Where(t => t.id == ownerId).SingleOrDefault().colorIndex;
+    }
 }

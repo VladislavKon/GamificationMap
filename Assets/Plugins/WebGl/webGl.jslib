@@ -33,10 +33,10 @@ mergeInto(LibraryManager.library, {
       "GetAllTeams"
     );
   },
-  SubtractPoints: function (player) {
+  SubtractPoints: function (CurrentPlayer, points) {
     window.dispatchReactUnityEvent(
       "SubtractPoints",
-      Pointer_stringify(player)
+      Pointer_stringify(CurrentPlayer, points)
     );
   }
 });

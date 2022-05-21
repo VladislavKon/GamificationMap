@@ -1,4 +1,5 @@
 using Assets.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -244,12 +245,13 @@ public class HexGrid : MonoBehaviour
         {
 			var targetCell = cells.SingleOrDefault(c => c.coordinates.X == cell.x && c.coordinates.Y == cell.y && c.coordinates.Z == cell.z);
 			targetCell.ColorIndex = cell.color;
-			targetCell.Elevation = cell.elevation;
+			targetCell.Elevation = cell.elevation;			
+            if (cell.ownerId != null)
+            {
+				targetCell.ownerColorHighligh = GameController.GetTeamColor(cell.ownerId);
+				targetCell.OwnerId = Guid.Parse(cell.ownerId);
+			}
         }
-		//for (int i = 0; i < cells.Length; i++)
-		//{            
-		//	cells[i].Load(map.cells[i]);
-		//}
 		for (int i = 0; i < chunks.Length; i++)
 		{
 			chunks[i].Refresh();

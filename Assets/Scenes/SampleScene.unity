@@ -392,7 +392,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u0417\u0430\u0445\u0432\u0430\u0442\u0438\u0442\u044C \u043A\u043B\u0435\u0442\u043A\u0443?"
+  m_Text: 'Capture this cell?
+
+'
 --- !u!222 &143878389
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -488,7 +490,7 @@ GameObject:
   - component: {fileID: 159958657}
   - component: {fileID: 159958656}
   m_Layer: 0
-  m_Name: Text
+  m_Name: PointsText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -502,7 +504,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 159958654}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.0000074052}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1611303300}
@@ -510,7 +512,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -27.4, y: 37.2}
+  m_AnchoredPosition: {x: -27.4, y: -9.5}
   m_SizeDelta: {x: 142.756, y: 21.031}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &159958656
@@ -546,7 +548,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u043E\u0447\u043A\u043E\u0432:"
+  m_Text: 'Points:'
 --- !u!222 &159958657
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -859,7 +861,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 299644556}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.00001047249}
+  m_LocalPosition: {x: 0, y: 0, z: 0.00005847141}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1611303300}
@@ -867,7 +869,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 63.489014, y: 37.200043}
+  m_AnchoredPosition: {x: 63.489014, y: -9.4999695}
   m_SizeDelta: {x: 47.717, y: 21.031}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &299644558
@@ -2519,7 +2521,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &954559866
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3793,7 +3795,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u041D\u0435\u0442"
+  m_Text: No :(
 --- !u!222 &1324550790
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5172,7 +5174,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u0414\u0430"
+  m_Text: OF COURSE!!!
 --- !u!222 &1861306832
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5268,7 +5270,7 @@ GameObject:
   - component: {fileID: 1998038805}
   - component: {fileID: 1998038804}
   m_Layer: 0
-  m_Name: Text (1)
+  m_Name: PlayerNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5326,7 +5328,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u0418\u043C\u044F \u0438\u0433\u0440\u043E\u043A\u0430:"
+  m_Text: 'Player Name:'
 --- !u!222 &1998038805
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5624,8 +5626,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -79.01001, y: -14.799988}
-  m_SizeDelta: {x: -206.26, y: -60.938}
+  m_AnchoredPosition: {x: -72.09301, y: -14.799988}
+  m_SizeDelta: {x: -192.426, y: -56.649}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2083009254
 MonoBehaviour:

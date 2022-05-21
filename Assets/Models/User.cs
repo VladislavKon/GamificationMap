@@ -6,16 +6,11 @@ using System.Threading.Tasks;
 
 namespace Assets.Models
 {
+    [Serializable]
     public class User
     {
         public string userName;
-        public Guid id;
+        public string id;
         public int points;
-        public string role;
-
-        public object Clone()
-        {
-            return this.MemberwiseClone();
-        }
     }
 }

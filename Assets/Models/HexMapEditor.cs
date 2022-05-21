@@ -1,6 +1,7 @@
 using Assets.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -57,7 +58,7 @@ public class HexMapEditor : MonoBehaviour
 	/// Обработчик клика мыши по гриду(каждый апдейт кадра)
 	/// </summary>
 	void HandleInput()
-	{
+	{        
 		Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
 		if (!Physics.Raycast(inputRay, out hit))
@@ -82,7 +83,6 @@ public class HexMapEditor : MonoBehaviour
     {
 		EditCellFunc editCellFunc = (hexCell) => EditCell(hexCell);
 		popupCapture.ShowPopup(editCellFunc, cell);
-		//EditCell(cell);
     }
 	/// <summary>
 	///  Метод редактирования нескольких ячеек (для размера кисти кисти)
@@ -118,38 +118,42 @@ public class HexMapEditor : MonoBehaviour
 				cell.ColorIndex = Array.IndexOf(hexGrid.colors, activeColor);
 				cell.Color = activeColor;
 			}
-			//         if (activeTerrainTypeIndex >= 0)
-			//{
-			//	cell.ColorIndex = activeTerrainTypeIndex;
-			//}
 			if (applyElevation)
 			{
 				cell.Elevation = activeElevation;
 			}
-			Cell updatedCell = new Cell(cell.ColorIndex, cell.Elevation, cell.coordinates.X, cell.coordinates.Y, cell.coordinates.Z);
+			var playerTeam = gameController.GetPlayerTeam();
+			cell.ownerColorHighligh = playerTeam.colorIndex;
+			cell.OwnerId = Guid.Parse(playerTeam.id);
+			Cell updatedCell = new Cell(cell.ColorIndex, cell.Elevation, cell.coordinates.X, cell.coordinates.Y, cell.coordinates.Z, playerTeam.id);			
 			UpdateTargetCell(updatedCell);
 		}
 	}
 
-	public void CaptureCell(HexCell cell)
-	{
-		if (cell && gameController.GetPlayerInfo() != null)
-		{
-			cell.Owner = gameController.GetPlayerInfo().id;
-		}
-	}
+	//public void CaptureCell(HexCell cell)
+	//{
+	//	if (cell && gameController.GetPlayerTeam() != null)
+	//	{
+	//		cell.ownerColorHighligh = Color.green;
+	//		cell.OwnerId = Guid.Parse(gameController.GetPlayerTeam().id);
+	//	}
+	//}
+
 	/// <summary>
-	/// Метод для захвата ячейки
+	/// Метод для захвата ячейки из React
 	/// </summary>
 	/// <param name="cell"></param>
 	public void OnCaptureCell(Cell cell)
     {
 		var cellCoordinates = new HexCoordinates(cell.x, cell.z);
 		var selectedCell = hexGrid.GetCell(cellCoordinates);
-		selectedCell.Owner = Guid.Empty;
+		selectedCell.ownerColorHighligh = GameController.GetTeamColor(cell.ownerId);
+		selectedCell.OwnerId = Guid.Parse(cell.ownerId);
     }
 
-	public void SelectColor(int index)
+    
+
+    public void SelectColor(int index)
 	{
 		applyColor = index >= 0;
 		if (applyColor)
